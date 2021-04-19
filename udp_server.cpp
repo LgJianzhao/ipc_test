@@ -41,7 +41,7 @@ typedef struct _SReportT{
 	int ooo; 	// TODO 乱序 out-of-order
 } SReportT;
 
-bool comp(const SReportT &a, const SReportT &b){
+bool Comp(const SReportT &a, const SReportT &b){
 	return a.lat < b.lat;
 }
 
@@ -59,7 +59,7 @@ int
 PrintPerfReport(SReportT *pReport, int size, int count, int elapsed /* us */) {
 
 	vector<SReportT> vec(pReport, pReport + count);
-	sort(vec.begin(), vec.end(), comp);
+	sort(vec.begin(), vec.end(), Comp);
 
 	if (debug > 2) {
 		printf("vec size: %lu\n", vec.size());

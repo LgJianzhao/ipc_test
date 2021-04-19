@@ -34,6 +34,7 @@ using namespace std;
  *  通过启动参数可修改运行方式
  */
 int gRecvEcho = 0;
+int gConnectLocal = 1; // 线连接服务端
 
 typedef struct _SReportT{
 	int lat; 	// 延迟，单位：微妙
@@ -116,8 +117,8 @@ int main(int argc, char *argv[]) {
 	if (argc < 6) {
 		printf("usage: ./udp_client [local ip] [remote ip] [remote port] [msg-size] [rt-count] [recv](optional)\n"
 			 "eg: \n"
-			 "run without [recv]: ./tcp_client 192.168.0.11 192.168.0.21 8080 64 10000\n"
-			 "run with [recv]: ./tcp_client 192.168.0.11 192.168.0.21 8080 64 10000 1");
+			 "run without [recv]: ./udp_client 192.168.0.11 192.168.0.21 8080 64 10000\n"
+			 "run with [recv]: ./udp_client 192.168.0.11 192.168.0.21 8080 64 10000 1\n");
 		return -1;
 	}
 
@@ -135,7 +136,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	/* 初始化客户端套接字 */
-	int cfd = socket(AF_INET /* IPV4 */, SOCK_DGRAM /* TCP */, 0 /* IP */);
+	int cfd = socket(AF_INET /* IPV4 */, SOCK_DGRAM /* UDP */, 0 /* IP */);
 	if (cfd < 0) {
 		perror("socket creation");
 		return -1;
@@ -174,6 +175,14 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
+	/* 连接服务端 */
+	if (gConnectLocal) {
+        if(connect(cfd, (struct sockaddr *)&saddr, sizeof(saddr)) < 0) {
+			perror("connect");
+			return -1;
+        }
+	}
+
 	/* 构建发送包 */
 	int pktLen = 0;
 	char *pPktbuf = Pkt_BuildRequest(size, &pktLen);
@@ -197,8 +206,8 @@ int main(int argc, char *argv[]) {
 
 	/* 发送、接收并统计信息 */
 	int64 perTs = 0;
-	int64 startTs = STime_GetMicrosecondsTime();
 	SReportT *pReport = (SReportT *) malloc(count * sizeof(SReportT));
+	int64 startTs = STime_GetMicrosecondsTime();
 
 	for (int i = 0; i < count; i++) {
 
@@ -210,9 +219,17 @@ int main(int argc, char *argv[]) {
 		/* 记录发送时间戳 */
 		perTs = STime_GetMicrosecondsTime();
 
-		if (sendto(cfd, pPktbuf, pktLen, 0, (struct sockaddr *)&saddr, sizeof(saddr)) != pktLen) {
-			perror("wirte");
-			goto END;
+		/* 本地连接需要指定服务端地址 */
+		if (gConnectLocal) {
+			 if (send(cfd, pPktbuf, pktLen, 0) != pktLen) {
+				 perror("wirte");
+				 goto END;
+			 }
+		} else {
+			if (sendto(cfd, pPktbuf, pktLen, 0, (struct sockaddr *)&saddr, sizeof(saddr)) != pktLen) {
+				perror("wirte");
+				goto END;
+			}
 		}
 
 		if (gRecvEcho) {

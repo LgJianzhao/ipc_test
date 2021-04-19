@@ -41,7 +41,6 @@ long gCount 		= 0; // request-response次数，总消息量 = count * 2
 /* 服务端监听端口 */
 #define SERVER_PORT 8080
 
-//#define RPC_DEBUG
 
 /**
  * 采样点记录

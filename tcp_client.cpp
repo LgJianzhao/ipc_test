@@ -37,66 +37,6 @@ using namespace std;
 int gRecvEcho = 0;
 
 /**
- * 打印性能报告
- */
-int
-PrintPerfReport(int *pReport, int size, int count, int elapsed /* us */) {
-
-	vector<int> vec(pReport, pReport + count);
-	sort(vec.begin(), vec.end());
-
-	if (debug > 2) {
-		printf("vec size: %lu\n", vec.size());
-		for (size_t idx = 0; idx < vec.size(); ++idx) {
-			printf("vec[%lu] == %d\n", idx, vec[idx]);
-		}
-	}
-	if (vec.size() == 0) {
-		printf("empty report\n");
-		return 0;
-	}
-
-	/* 计算 */
-	int sum = accumulate(vec.begin(), vec.end(), 0);
-	int min = vec.front();
-	int max = vec.back();
-	int avg = sum / count;
-	int p99 = vec[vec.size() * 0.99];
-	int p95 = vec[vec.size() * 0.95];
-	int p90 = vec[vec.size() * 0.90];
-	int p80 = vec[vec.size() * 0.80];
-	int p50 = vec[vec.size() * 0.50];
-
-	/* 吞吐量 带宽维度 Mbits/s */
-	double elapseds = elapsed * 1.00 / 1000000;
-	double thr =  size * 8.00 /* bits */ / elapseds / 1000000 /* 10^6bits */ * count;
-
-	/* 吞吐量 消息数量维度（TPS）*/
-	double trans = count*1.00 / elapseds;
-
-	/* 抖动，标准差 */
-	int s = 0;
-	for (size_t i = 0; i < vec.size(); i++) {
-		s += pow(vec[i] - avg, 2);
-	}
-	int sz = vec.size();
-	double sdev = sqrt(s / sz);
-
-	/* 统计信息，格式如下 */
-	if (debug > 0) {
-		printf("\n"
-				"RR         Send     Elapsed  Trans     Lat   Lat   Lat   Lat   Lat   Lat   Lat   Lat   Jitter 	ThroughPut		\n"
-				"Test       Message  Time     Rate      Avg   Max   Min   P99   P95   P90   P80   P50   StdDev 					\n"
-				"count      bytes    secs.    per/s     us.   us.   us.   us.   us.   us.   us.   us.   us.    	10^6bits/sec	\n");
-	}
-
-	printf("%-11d%-9d%-9.2f%-10.2f%-6d%-6d%-6d%-6d%-6d%-6d%-6d%-6d%-8.2f%-13.2f\n",
-			count, size, elapseds, trans, avg, max, min, p99, p95, p90, p80, p50, sdev, thr);
-
-	return 1;
-}
-
-/**
  * 打印发送吞吐量报告
  */
 int
@@ -254,7 +194,7 @@ END:
 	/**
 	 * 输出性能报告
 	 */
-	PrintPerfReport(pReport, size, count, STime_GetMicrosecondsTime()-startTs);
+	PrintPerfReport_V1(pReport, size, count, STime_GetMicrosecondsTime()-startTs);
 
 	/* 释放资源 */
 	Pkt_FreeRequest(pPktbuf);

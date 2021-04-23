@@ -9,7 +9,7 @@ sh tcp_perf_test_server.sh -p 10097 -c 50000
 sh tcp_perf_test_client.sh -l 192.168.0.11 -h 192.168.0.21 -p 10097 -c 50000
 
 3. 拷贝测试报告tcp_perf_test_client.sh_${date}.csv 到本地,这里分析
-scp zhaoj@192.168.0.11:/home/zhaoj/code/quant_perf_test/tcp_perf_test_client.sh_20210416.111446.csv .
+scp zhaoj@192.168.0.11:/home/zhaoj/code/ipc_perf_test/tcp_perf_test_client.sh_20210416.111446.csv .
 
 
 ### UDP
@@ -20,7 +20,7 @@ sh udp_perf_test_server.sh -p 10097 -c 50000
 sh udp_perf_test_client.sh -l 192.168.0.11 -h 192.168.0.21 -p 10097 -c 50000
 
 3. 拷贝测试报告udp_perf_test_client.sh_${date}.csv 到本地,这里分析
-scp zhaoj@192.168.0.11:/home/zhaoj/code/quant_perf_test/udp_perf_test_client.sh_20210416.111446.csv .
+scp zhaoj@192.168.0.11:/home/zhaoj/code/ipc_perf_test/udp_perf_test_client.sh_20210416.111446.csv .
 
 
 ## 参考： 

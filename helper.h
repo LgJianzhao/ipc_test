@@ -34,9 +34,8 @@ int debug = 0;
 static inline int64
 STime_GetMillisecondsTime() {
 	struct timeval tv = {0, 0};
-
 	gettimeofday(&tv, NULL);
-    return (int64) tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	return (int64) tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
 /**
@@ -46,9 +45,8 @@ STime_GetMillisecondsTime() {
 static inline int64
 STime_GetMicrosecondsTime() {
 	struct timeval tv = {0, 0};
-
 	gettimeofday(&tv, NULL);
-    return (int64) tv.tv_sec * 1000000 + tv.tv_usec;
+	return (int64) tv.tv_sec * 1000000 + tv.tv_usec;
 }
 
 /**
@@ -58,9 +56,8 @@ STime_GetMicrosecondsTime() {
 static inline int64
 STime_GetNanosecondsTime() {
 	timespec ts;
-
 	clock_gettime(CLOCK_REALTIME, &ts);
-    return (int64) ts.tv_sec * 1000000000 + ts.tv_nsec;
+	return (int64) ts.tv_sec * 1000000000 + ts.tv_nsec;
 }
 
 

@@ -133,9 +133,9 @@ PrintPerfReport(SReportT *pReport, int size, int count, int elapsed /* us */) {
 	/* 统计信息，格式如下 */
 	if (debug > 0) {
 		printf("\n"
-				"RR         Send     Elapsed  Trans     Lat   Lat   Lat   Lat   Lat   Lat   Lat   Lat   Jitter 	ThroughPut		\n"
-				"Test       Message  Time     Rate      Avg   Max   Min   P99   P95   P90   P80   P50   StdDev 					\n"
-				"count      bytes    secs.    per/s     us.   us.   us.   us.   us.   us.   us.   us.   us.    	10^6bits/sec	\n");
+			"RR         Send     Elapsed  Trans     Lat   Lat   Lat   Lat   Lat   Lat   Lat   Lat   Jitter 	ThroughPut	\n"
+			"Test       Message  Time     Rate      Avg   Max   Min   P99   P95   P90   P80   P50   StdDev 			\n"
+			"count      bytes    secs.    per/s     us.   us.   us.   us.   us.   us.   us.   us.   us.    	10^6bits/sec	\n");
 	}
 
 	printf("%-11d%-9d%-9.2f%-10.2f%-6d%-6d%-6d%-6d%-6d%-6d%-6d%-6d%-8.2f%-13.2f\n",
@@ -193,9 +193,9 @@ PrintPerfReport_V1(int *pReport, int size, int count, int elapsed /* us */) {
 	/* 统计信息，格式如下 */
 	if (debug > 0) {
 		printf("\n"
-				"RR         Send     Elapsed  Trans     Lat   Lat   Lat   Lat   Lat   Lat   Lat   Lat   Jitter 	ThroughPut		\n"
-				"Test       Message  Time     Rate      Avg   Max   Min   P99   P95   P90   P80   P50   StdDev 					\n"
-				"count      bytes    secs.    per/s     us.   us.   us.   us.   us.   us.   us.   us.   us.    	10^6bits/sec	\n");
+			"RR         Send     Elapsed  Trans     Lat   Lat   Lat   Lat   Lat   Lat   Lat   Lat   Jitter 	ThroughPut	\n"
+			"Test       Message  Time     Rate      Avg   Max   Min   P99   P95   P90   P80   P50   StdDev 			\n"
+			"count      bytes    secs.    per/s     us.   us.   us.   us.   us.   us.   us.   us.   us.    	10^6bits/sec	\n");
 	}
 
 	printf("%-11d%-9d%-9.2f%-10.2f%-6d%-6d%-6d%-6d%-6d%-6d%-6d%-6d%-8.2f%-13.2f\n",

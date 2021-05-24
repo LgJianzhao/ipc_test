@@ -28,15 +28,15 @@ using namespace std;
 
 
 /********************************************
- ** 		       全局变量			       **
+ ** 		       全局变量		**
  ********************************************/
 int gSendBeginTime 	= 0; // 开始发送时间
-int gSize 			= 0; // 每次发送数据包大小，单位：字节
+int gSize 		= 0; // 每次发送数据包大小，单位：字节
 long gCount 		= 0; // request-response次数，总消息量 = count * 2
 
 
 /********************************************
- ** 		       常量宏定义			       **
+ ** 		       常量宏定义		**
  ********************************************/
 /* 服务端监听端口 */
 #define SERVER_PORT 8080
@@ -94,9 +94,9 @@ void *Read(void *arg) {
 
 	/* 吞吐量统计 */
 	int span = STime_GetMicrosecondsTime() - gSendBeginTime;
-    printf("average throughput: %li msg/s\n", (gCount * 1000000) / span);
-    printf("average throughput: %li Mb/s\n",
-           (((gCount * 1000000) / span) * gSize * 8) / 1000000);
+    	printf("average throughput: %li msg/s\n", (gCount * 1000000) / span);
+    	printf("average throughput: %li Mb/s\n", 
+	       (((gCount * 1000000) / span) * gSize * 8) / 1000000);
 
 	/* 资源释放 */
     return NULL;
@@ -118,16 +118,16 @@ void *Write(void *arg)
 	}
 
 	if (debug > 2) {
-    	char *p = pPkgBuf;
+    		char *p = pPkgBuf;
 
 #ifdef PKT_WITH_HEADER
-    	int64 a = 0;
-    	memcpy(&a, pPkgBuf, HEADER_LEN_SEND_US);
-    	printf("%lld\n", a);
+    		int64 a = 0;
+    		memcpy(&a, pPkgBuf, HEADER_LEN_SEND_US);
+    		printf("%lld\n", a);
 #endif
 
-    	p += HEADER_LEN;
-    	printf("%s\n", p);
+    		p += HEADER_LEN;
+    		printf("%s\n", p);
 	}
 
 	/* 记录开始发送时间 */
@@ -154,22 +154,21 @@ void *Write(void *arg)
 
 	/* 释放资源 */
 	Pkt_FreeRequest(pPkgBuf);
-
 	return NULL;
 }
 
 int main(int argc, char *argv[]) {
 	if (argc < 6) {
 		printf("usage: ./tcp_client [local ip] [remote ip] [remote port] [msg-size] [rt-count]\n"
-			   "eg: ./tcp_client 192.168.0.11 192.168.0.21 8080 64 10000\n");
+			"eg: ./tcp_client 192.168.0.11 192.168.0.21 8080 64 10000\n");
 		return -1;
 	}
 
-	char *localHost 	= argv[1]; 				// 指定发送IP
-	char *remoteHost 	= argv[2];				// 指定远端IP
+	char *localHost 	= argv[1]; 			// 指定发送IP
+	char *remoteHost 	= argv[2];			// 指定远端IP
 	int remotePort 		= atoi(argv[3]); 		// 指定远端端口
-	gSize 				= atoi(argv[4]); 		// 每次发送数据包大小，单位：字节
-	gCount 				= atol(argv[5]); 		// 往返次数，总消息量 = count * 2
+	gSize 			= atoi(argv[4]); 		// 每次发送数据包大小，单位：字节
+	gCount 			= atol(argv[5]); 		// 往返次数，总消息量 = count * 2
 	printf("\n from: [%s], to: [%s:%d], size: [%d], round-trip count: [%ld]\n",
 			localHost, remoteHost, remotePort, gSize, gCount);
 
